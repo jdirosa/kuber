@@ -1,0 +1,46 @@
+{
+  "name": "kuber-react",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.26",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.1",
+    "typescript": "^3.7.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "docker-build": "docker build -t kuber-react .",
+    "docker-tag": "docker tag kuber-react localhost:5000/kuber-react",
+    "docker-push": "docker push localhost:5000/kuber-react",
+    "kuber-deploy": "kubectl apply -f ../deployment.yaml",
+    "kuber-kill": "kubectl delete service,deployment kuber-react",
+    "kuber-delete-pods": " kubectl delete pods -l app=kuber-react",
+    "deploy-to-cluster": "npm run build && npm run docker-build && npm run docker-tag && npm run docker-push && npm run kuber-delete-pods"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
