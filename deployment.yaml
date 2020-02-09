@@ -19,6 +19,28 @@ spec:
           ports:
             - containerPort: 80
       restartPolicy: Always
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kuber-gql
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kuber-gql
+  template:
+    metadata:
+      labels:
+        app: kuber-gql
+    spec:
+      containers:
+        - name: kuber-gql
+          image: localhost:5000/kuber-gql
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4000
+      restartPolicy: Always
 
       #TODO: Make an API that runs in the cluster, too
       # TODO: Do some healtch checks
@@ -36,3 +58,17 @@ spec:
       nodePort: 31000
   selector:
     app: kuber-react
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kuber-gql
+spec:
+  type: NodePort
+  ports:
+    - port: 4000
+      targetPort: 4000
+      protocol: TCP
+      nodePort: 32000
+  selector:
+    app: kuber-gql

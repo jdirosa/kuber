@@ -1,0 +1,31 @@
+{
+  "name": "gql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --config \"./nodemon.json\"/",
+    "docker-run": "docker run --name kuber-gql -p 4000:4000 kuber-gql",
+    "docker-build": "docker build -t kuber-gql .",
+    "docker-tag": "docker tag kuber-gql localhost:5000/kuber-gql",
+    "docker-push": "docker push localhost:5000/kuber-gql",
+    "kuber-deploy": "kubectl apply -f ../deployment.yaml",
+    "kuber-kill": "kubectl delete service,deployment kuber-gql",
+    "kuber-delete-pods": " kubectl delete pods -l app=kuber-gql",
+    "deploy-to-cluster": "npm run docker-build && npm run docker-tag && npm run docker-push && npm run kuber-delete-pods"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.10.0",
+    "graphql": "^14.6.0"
+  },
+  "devDependencies": {
+    "ts-node": "^8.4.1",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.4",
+    "nodemon": "^1.19.4"
+  }
+}
