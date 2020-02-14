@@ -54,7 +54,14 @@ export const TopNav: React.FC = ({ children }) => {
               Logout
             </Button>
           ) : (
-            <Button color="inherit" onClick={() => loginWithRedirect()}>
+            <Button
+              color="inherit"
+              onClick={() =>
+                loginWithRedirect({
+                  redirect_uri: "http://localhost:3000/login/callback"
+                })
+              }
+            >
               Login
             </Button>
           )}

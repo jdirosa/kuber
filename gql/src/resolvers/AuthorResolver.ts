@@ -1,6 +1,4 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
-import { CreateBookInput } from "../inputs/CreateBookInput";
-import { UpdateBookInput } from "../inputs/UpdateBookInput";
 import { Author } from "../models/Author";
 import { UpdateAuthorInput } from "../inputs/UpdateAuthorInput";
 import { CreateAuthorInput } from "../inputs/CreateAuthorInput";

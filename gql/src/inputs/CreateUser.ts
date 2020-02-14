@@ -1,7 +1,7 @@
 import { InputType, Field } from "type-graphql";
 
 @InputType()
-export class CreateAuthorInput {
+export class CreateUser {
   @Field()
-  name: string;
+  authId: string;
 }

@@ -1,6 +1,8 @@
 import React from "react";
 import { useAuth0 } from "../../auth/authHook";
 import * as qs from "query-string";
+import { useMutation } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 
 /** This endpoint is just a info auth endpoint. Regular users will not see this. */
 export const AuthCallback: React.FunctionComponent = ({
@@ -8,6 +10,25 @@ export const AuthCallback: React.FunctionComponent = ({
   history
 }: any) => {
   const auth = useAuth0();
+
+  const query = gql`
+    mutation CreateUser($authId: String!) {
+      createUser(data: { authId: $authId }) {
+        id
+        authId
+      }
+    }
+  `;
+  const [addUser, { data }] = useMutation(query);
+
+  React.useEffect(() => {
+    if (!auth.user) {
+      return;
+    }
+    const sub: string = auth.user.sub;
+    const authId = sub.substr(sub.indexOf("|") + 1);
+    addUser({ variables: { authId } });
+  }, [auth.user]);
   if (!auth.user) {
     return null;
   }

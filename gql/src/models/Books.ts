@@ -3,9 +3,7 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  TableForeignKey,
-  ManyToOne,
-  JoinTable
+  ManyToOne
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { Author } from "./Author";
