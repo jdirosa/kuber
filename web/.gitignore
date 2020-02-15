@@ -1,0 +1,11 @@
+node_modules/
+# So, because we are noto exporting this lib as 
+# .js with a .d.ts, it gets tricky to actually 
+# compile something in node_modules. As a stop 
+# gap, there is simply a script that runs to move 
+# this from node_modules to src
+src/@barracuda-janus 
+*.log
+.idea
+.vscode
+.DS_Store

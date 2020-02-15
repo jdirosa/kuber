@@ -1,0 +1,38 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"declaration": true,
+		"declarationDir": "./dist",
+		"outDir": "lib",
+		"sourceMap": true,
+		"target": "es5",
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": "src",
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noImplicitAny": true,
+		"jsx": "react",
+		"removeComments": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"moduleResolution": "node",
+		"types": ["node"],
+		"rootDirs": ["src"],
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"typeRoots": ["node_modules/@types", "@types"],
+		"preserveSymlinks": true,
+		"plugins": [{ "name": "typescript-tslint-plugin" }],
+		"downlevelIteration": true,
+		"lib": [
+			"dom",
+			"es5",
+			"scripthost",
+			"es2015.collection",
+			"es2015.promise"
+		]
+	},
+	"exclude": ["node_modules", "dist", "lib", "build", "**/*test.js"],
+	"include": ["src/**/*", "@types/**.d.ts"]
+}
