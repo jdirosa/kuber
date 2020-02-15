@@ -25,11 +25,12 @@ Some notes along the way. 1. to publish to a private docker registry, you have t
 1. Cleanup lambda resources (I created some dummy onces to test stuff out)
 1. Start saving data from emails
 1. Build the front end that lets me manage the things
-1. Architect how email rules will work. In the beginning, this might look like
+1. Architect how email rules will work. In the beginning, probably just `BLOCK`, `ALLOW`, `AUTO-RESPOND`, and `LIMIT`. Limit will monitor frequency and stop after a certain threshold.
 
-- Block
-- Allow
-- Limit
-  - This will watch the number of emails that come through and block after a certain threshhold.
-- Autorespond
-- Cat data somehow
+## Project Structure
+
+I'll get a diagram up here once things are further along
+
+## Get it Running
+
+Instructions to follow. This is a personal project and I am not really setting this up for generic set up and go. The instructions here will be mostly to remind myself in the event I leave it for some time
