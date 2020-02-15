@@ -9,6 +9,7 @@ A hobby project to proxy my emails and collect data on the types of junk I get.
 - DB to track email data. Haven't decided on a solution yet
 - AWS SES to proxy emails
 - Lambda to push email to s3 and notify a web hook
+- Serverless to better streamline lambda and such
 - nodejs web server to listen for webhook calls and process emails from s3 bucket
 - K8s to do the things
 
