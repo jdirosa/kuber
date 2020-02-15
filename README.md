@@ -1,10 +1,16 @@
 # Goal
 
-Create a k8s cluster that runs the following:
+A hobby project to proxy my emails and collect data on the types of junk I get.
+
+## Tech
 
 - React app (served from nginx).
 - GraphQL to serve up data setup from Apollo
-- Mongo DB with seeded data
+- DB to track email data. Haven't decided on a solution yet
+- AWS SES to proxy emails
+- Lambda to push email to s3 and notify a web hook
+- nodejs web server to listen for webhook calls and process emails from s3 bucket
+- K8s to do the things
 
 ### Notes
 
@@ -14,12 +20,16 @@ Some notes along the way. 1. to publish to a private docker registry, you have t
 
 ## Next Steps
 
-1. Explore k8s features (health endpoints)
-1. GQL wired up to front end
-1. Setup mongoDB to run in seperate k8 node
-1. Switch from sqllite to mongo. Read [this](https://typeorm.io/#/mongodb)
-1. Explore long term k8 storage
-1. Explore prod deploy strategies
-1. Explore pagination in gql
-1. Explore sockets in gql
-1. Explore auth in gql
+1. Once AWS removes my sandbox blocker, I'll test actually sending emails from s3
+1. Delete s3 emails once they are sent
+1. Cleanup lambda resources (I created some dummy onces to test stuff out)
+1. Start saving data from emails
+1. Build the front end that lets me manage the things
+1. Architect how email rules will work. In the beginning, this might look like
+
+- Block
+- Allow
+- Limit
+  - This will watch the number of emails that come through and block after a certain threshhold.
+- Autorespond
+- Cat data somehow
