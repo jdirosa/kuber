@@ -1,12 +1,16 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
-import { User } from "../models/User";
+import { User } from "../models";
 import { CreateUser } from "../inputs/CreateUser";
 
 @Resolver()
 export class UserResolver {
   @Query(() => [User])
   users() {
-    return User.find();
+    return User.find({ relations: ["emails"] });
+  }
+  @Query(() => User)
+  user(@Arg("id") authId: string) {
+    return User.findOne({ where: { authId }, relations: ["emails"] });
   }
   @Mutation(() => User)
   async createUser(@Arg("data") data: CreateUser) {

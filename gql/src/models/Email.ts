@@ -3,26 +3,27 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany
+  ManyToOne
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
-import { Email } from "./Email";
+import { User } from "./User";
 
 @Entity()
 @ObjectType()
-export class User extends BaseEntity {
+export class Email extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: string;
 
   @Field(() => String)
   @Column()
-  authId: string;
+  from: string;
 
-  @Field(() => [Email])
-  @OneToMany(
-    type => Email,
-    email => email.user
+  // This will need to be an FK to user
+  @Field(() => String)
+  @ManyToOne(
+    type => User,
+    user => user.emails
   )
-  emails: Email[];
+  user: User;
 }
