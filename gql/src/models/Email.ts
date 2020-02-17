@@ -20,10 +20,14 @@ export class Email extends BaseEntity {
   from: string;
 
   // This will need to be an FK to user
-  @Field(() => String)
+  @Field(() => User)
   @ManyToOne(
     type => User,
     user => user.emails
   )
   user: User;
+
+  @Field(() => Date)
+  @Column()
+  date: Date;
 }

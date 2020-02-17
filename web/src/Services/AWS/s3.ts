@@ -3,12 +3,19 @@ import * as AWS from "aws-sdk";
 
 export const getEmails = async () => {
 	const s3 = new AWS.S3({});
+	const emails: { id: string; email: string }[] = [];
+	const bucket = "jamesdirosa-email";
+	const allFiles = await s3.listObjectsV2({ Bucket: bucket }).promise();
 
-	const options = {
-		Bucket: "jamesdirosa-email",
-		Key: "gbvvvkg8uf10o562eudqo487u89lv6b8vrb48ug1",
-	};
-	const response = await s3.getObject(options).promise();
+	for (const c of allFiles.Contents) {
+		const email = await s3
+			.getObject({
+				Bucket: bucket,
+				Key: c.Key,
+			})
+			.promise();
+		emails.push({ id: c.Key, email: email.Body.toString() });
+	}
 
-	return response.Body.toString();
+	return emails;
 };

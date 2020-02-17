@@ -1,6 +1,9 @@
 import * as mailParser from "mailparser";
 import { IEmail } from "../Models/Email";
-export const parseMail = async (mailString: string): Promise<IEmail> => {
+export const parseMail = async (
+	mailString: string,
+	s3Id: string
+): Promise<IEmail> => {
 	const response = await mailParser.simpleParser(mailString);
 	console.log(JSON.stringify(response, null, 2));
 	const from = response.from.value[0];
@@ -11,6 +14,7 @@ export const parseMail = async (mailString: string): Promise<IEmail> => {
 		};
 	});
 	const email: IEmail = {
+		id: s3Id,
 		date: response.date,
 		from: {
 			address: from.address,

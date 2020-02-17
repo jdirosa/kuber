@@ -1,5 +1,4 @@
 import { InputType, Field } from "type-graphql";
-import { User } from "../models";
 
 @InputType()
 export class CreateEmail {
@@ -10,5 +9,5 @@ export class CreateEmail {
   from: string;
 
   @Field()
-  user: User;
+  userId: string;
 }

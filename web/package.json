@@ -2,10 +2,17 @@
 	"name": "web_api_mock",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "test.ts",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "nodemon --config \"./nodemon.json\"/"
+		"start": "nodemon --config \"./nodemon.json\"/",
+		"docker-build": "docker build -t kuber-web .",
+		"docker-tag": "docker tag kuber-web localhost:5000/kuber-web",
+		"docker-push": "docker push localhost:5000/kuber-web",
+		"kuber-deploy": "kubectl apply -f ../deployment.yaml",
+		"kuber-kill": "kubectl delete service,deployment kuber-web",
+		"kuber-delete-pods": " kubectl delete pods -l app=kuber-web",
+		"deploy-to-cluster": "npm run docker-build && npm run docker-tag && npm run docker-push && npm run kuber-delete-pods"
 	},
 	"author": "",
 	"license": "ISC",

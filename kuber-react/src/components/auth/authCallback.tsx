@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth0 } from "../../auth/authHook";
-import * as qs from "query-string";
+// import * as qs from "query-string";
 import { useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 
@@ -34,6 +34,7 @@ export const AuthCallback: React.FunctionComponent = ({
   }
 
   // Check if there is a return url (there always should be)
+  /*  Need to resolve the types of qs package
   if (location) {
     const parsed = qs.parse(location.search);
 
@@ -46,6 +47,7 @@ export const AuthCallback: React.FunctionComponent = ({
       history.push(parsed.retUrl);
     }
   }
+  */
   return (
     <div>
       <img src={auth.user.picture} style={{ width: 120, marginBottom: 30 }} />

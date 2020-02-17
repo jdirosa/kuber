@@ -3,7 +3,7 @@ apiVersion: apps/v1
 metadata:
   name: kuber-react
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: kuber-react
@@ -41,9 +41,6 @@ spec:
           ports:
             - containerPort: 4000
       restartPolicy: Always
-
-      #TODO: Make an API that runs in the cluster, too
-      # TODO: Do some healtch checks
 ---
 kind: Service
 apiVersion: v1
@@ -72,3 +69,12 @@ spec:
       nodePort: 32000
   selector:
     app: kuber-gql
+---
+#Map uri to external service.
+kind: Service
+apiVersion: v1
+metadata:
+  name: kuberlocal
+spec:
+  type: ExternalName
+  externalName: kuber.local

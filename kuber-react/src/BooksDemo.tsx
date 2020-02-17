@@ -5,7 +5,7 @@ import { gql } from "apollo-boost";
 export const BooksDemo: React.FC = () => {
   const query = gql`
     {
-      books {
+      emails {
         title
         author {
           name
