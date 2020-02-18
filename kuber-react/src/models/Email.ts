@@ -1,16 +1,8 @@
 export interface IEmail {
   id: string;
   date: Date;
-  from: {
-    name: string;
-    address: string;
-    domain: string;
-  };
-  to: {
-    name: string;
-    address: string;
-  }[];
+  from: string;
+  domain: string;
   subject: string;
-  body: string;
-  bodyHtml: string;
+  read: boolean;
 }

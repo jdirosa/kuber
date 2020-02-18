@@ -1,33 +1,32 @@
 # Goal
 
-A hobby project to proxy my emails and collect data on the types of junk I get.
+A hobby project to proxy my emails and collect data on the types of junk I get. I thought it would be fun to make my own email service. I could parse out the text of the emails and make this searchable.
 
 ## Tech
 
 - React app (served from nginx).
-- GraphQL to serve up data setup from Apollo
-- DB to track email data. Haven't decided on a solution yet
-- AWS SES to proxy emails
+- GraphQL to serve up data from an Apollo server
+- RDS to track email metadata.
+- AWS SES to handle SMTP
 - Lambda to push email to s3 and notify a web hook
 - Serverless to better streamline lambda and such
-- nodejs web server to listen for webhook calls and process emails from s3 bucket
-- K8s to do the things
+- nodejs (express) web server to listen for webhook calls and process emails from s3 bucket
+- All running in kubernetes
 
 ### Notes
 
-Some notes along the way. 1. to publish to a private docker registry, you have to tag with the local host and port.
-`docker tag [APPNAME] localhost:5000/[APPNAME]`
-`docker tag kuber-react localhost:5000/kuber-react`
+Some notes along the way.
+
+1. to publish to a private docker registry, you have to tag with the local host and port.
+   `docker tag [APPNAME] localhost:5000/[APPNAME]`
+   `docker tag kuber-react localhost:5000/kuber-react`
 
 ## Next Steps
 
 1. Cleanup lambda resources (I created some dummy onces to test stuff out)
-1. Build the front end that lets me manage the things
-1. Architect how email rules will work. In the beginning, probably just `BLOCK`, `ALLOW`, `AUTO-RESPOND`, and `LIMIT`. Limit will monitor frequency and stop after a certain threshold.
-1. Add webapi to work in kluster
+1. Update webapi to work in kluster
 1. Deploy all the k8es
-1. setup AWS sdk to work from k8es. Needs IAM roles if in prod, or envars for locals
-1. Could turn into a full fledged email service..
+1. Setup AWS sdk to work from k8es. Needs IAM roles if in prod, or envars for locals
 
 ## Project Structure
 

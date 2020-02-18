@@ -10,24 +10,34 @@ export class EmailResolver {
   async emails() {
     const emails = await Email.find({ relations: ["user"] });
     return emails.sort(
-      (a, b) => a.date.getMilliseconds() - b.date.getMilliseconds()
-    );
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    ); // TODO: Let sql do the sorting
   }
   @Query(() => Email)
   email(@Arg("id") id: string) {
     return Email.findOne({ where: { id }, relations: ["user"] });
   }
-  @Query(() => EmailSummary)
+  @Query(() => [EmailSummary])
   async emailSummary(@Arg("userAuthId") id: string) {
     const user = await User.findOne({ where: { authId: id } });
-
+    const emailSummary: EmailSummary[] = [];
     if (!user) {
       throw new Error("Unable to get email summary for unknow user");
     }
     const emails = await Email.find({ where: { user } });
-    const isBlocked = await BlockedDomains.find({});
-    const count = emails.length;
-    console.log({ isBlocked, count });
+    // TODO: GroupBy in SQL
+    const distinctDomains = Array.from(new Set(emails.map(e => e.domain)));
+    const blockedDomains = await BlockedDomains.find({ where: { user } });
+    for (const d of distinctDomains) {
+      let summary: EmailSummary = {
+        count: emails.filter(e => e.domain === d).length,
+        domain: d,
+        isBlocked: blockedDomains.some(b => b.domain === d),
+        user
+      };
+      emailSummary.push(summary);
+    }
+    return emailSummary;
   }
   @Mutation(() => Email)
   async CreateEmail(@Arg("data") data: CreateEmail) {
@@ -39,7 +49,6 @@ export class EmailResolver {
     const email = Email.create(data);
     email.user = user;
     await email.save();
-    console.log("Email Created!", { email });
     return email;
   }
 }

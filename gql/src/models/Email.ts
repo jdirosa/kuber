@@ -1,10 +1,4 @@
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne
-} from "typeorm";
+import { Entity, BaseEntity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { User } from "./User";
 
@@ -12,17 +6,17 @@ import { User } from "./User";
 @ObjectType()
 export class Email extends BaseEntity {
   @Field(() => ID)
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @Field(() => String)
-  @Column()
+  @Column({ default: "" })
   from: string;
 
   @Field(() => String)
-  @Column()
+  @Column({ default: "" })
   domain: string;
-  // This will need to be an FK to user
+
   @Field(() => User)
   @ManyToOne(
     type => User,
@@ -35,14 +29,10 @@ export class Email extends BaseEntity {
   date: Date;
 
   @Field(() => String)
-  @Column()
+  @Column({ default: "" })
   subject: string;
 
-  @Field(() => String)
-  @Column()
-  body: string;
-
-  @Field(() => String)
-  @Column()
-  bodyHtml: string;
+  @Field(() => Boolean)
+  @Column({ default: false })
+  read: boolean;
 }
