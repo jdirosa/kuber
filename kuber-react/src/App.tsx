@@ -10,7 +10,7 @@ import { defaultTheme } from "./styles/theme";
 import { TopNav } from "./components/layout";
 import { ThemeProvider, CssBaseline, createMuiTheme } from "@material-ui/core";
 import { Home } from "./components/home";
-import { BooksDemo } from "./BooksDemo";
+import { EmailDemo } from "./EmailDemo";
 
 const client = new ApolloClient({
   uri: "http://localhost:32000"
@@ -26,7 +26,7 @@ const App = () => {
           <RouterFixed>
             <Route path="/login/callback" component={AuthCallback} />
             <Route path={ROUTES.home} exact component={Home} />
-            <Route path={"/books"} exact component={BooksDemo} />
+            <Route path={"/email"} exact component={EmailDemo} />
           </RouterFixed>
         </div>
       </ApolloProvider>

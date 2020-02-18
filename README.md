@@ -21,12 +21,13 @@ Some notes along the way. 1. to publish to a private docker registry, you have t
 
 ## Next Steps
 
-1. Once AWS removes my sandbox blocker, I'll test actually sending emails from s3
-1. Delete s3 emails once they are sent
 1. Cleanup lambda resources (I created some dummy onces to test stuff out)
-1. Start saving data from emails
 1. Build the front end that lets me manage the things
 1. Architect how email rules will work. In the beginning, probably just `BLOCK`, `ALLOW`, `AUTO-RESPOND`, and `LIMIT`. Limit will monitor frequency and stop after a certain threshold.
+1. Add webapi to work in kluster
+1. Deploy all the k8es
+1. setup AWS sdk to work from k8es. Needs IAM roles if in prod, or envars for locals
+1. Could turn into a full fledged email service..
 
 ## Project Structure
 

@@ -10,4 +10,10 @@ export class CreateEmail {
 
   @Field()
   userId: string;
+
+  @Field()
+  subject: string;
+
+  @Field()
+  body: string;
 }

@@ -13,6 +13,8 @@ export const parseMail = async (
 			address: t.address,
 		};
 	});
+	const { subject, text, textAsHtml } = response;
+
 	const email: IEmail = {
 		id: s3Id,
 		date: response.date,
@@ -22,10 +24,16 @@ export const parseMail = async (
 			name: from.name,
 		},
 		to,
+		subject,
+		body: text,
+		bodyHtml: "", // TODO: Will add later
 	};
 	return email;
 };
 
 export const getDomain = (email: string) => {
+	if (email.indexOf("@") < 0) {
+		return "";
+	}
 	return email.substr(email.indexOf("@") + 1);
 };

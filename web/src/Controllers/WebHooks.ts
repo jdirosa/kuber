@@ -5,6 +5,7 @@ import { getEmails } from "../Services/AWS/s3";
 import { sendEmail } from "../Services/Mail/sender";
 import { parseMail } from "../Services/Mail/parser";
 import { IEmail } from "../Services/Models/Email";
+import { parse } from "path";
 const controller = "api/webhooks";
 @Controller(controller)
 export class WebHooks {
@@ -19,7 +20,7 @@ export class WebHooks {
 			parsedEmails.push(parsed);
 		}
 
-		console.log({ parsedEmails });
-		res.status(200).send(JSON.stringify(parsedEmails, null, 2));
+		console.log(JSON.stringify(parsedEmails, null, 2));
+		res.status(200).json(parsedEmails);
 	}
 }

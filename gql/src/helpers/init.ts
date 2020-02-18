@@ -22,9 +22,13 @@ export const init = async () => {
     for (const email of response.data) {
       const myId = "116237562907569550796";
       const newEmail = Email.create({
+        subject: email.subject,
+        domain: email.from.domain,
         id: email.id,
         from: email.from.address,
-        date: email.date
+        date: email.date,
+        body: email.body,
+        bodyHtml: email.bodyHtml
       });
       const user = await User.findOne({ where: { authId: myId } });
       newEmail.user = user;

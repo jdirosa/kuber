@@ -4,7 +4,7 @@ import { ApolloServer } from "apollo-server";
 import { buildSchema } from "type-graphql";
 import { UserResolver, EmailResolver } from "./resolvers";
 import { Email } from "./models";
-// import { init } from "./helpers/init";
+import { init } from "./helpers/init";
 
 async function start() {
   const connection = await createConnection();
@@ -13,7 +13,7 @@ async function start() {
   const schema = await buildSchema({
     resolvers: [UserResolver, EmailResolver]
   });
-  // await init();
+  await init();
 
   const server = new ApolloServer({ schema });
   const { url } = await server.listen(4000);
