@@ -25,8 +25,8 @@ Some notes along the way.
 
 1. Cleanup lambda resources (I created some dummy onces to test stuff out)
 1. Update webapi to work in kluster
-1. Deploy all the k8es
-1. Setup AWS sdk to work from k8es. Needs IAM roles if in prod, or envars for locals
+1. Deploy all the k8s
+1. Setup AWS sdk to work from k8s. Needs IAM roles if in prod, or envars for locals
 
 ## Project Structure
 
