@@ -17,7 +17,7 @@ export const parseMail = async (
 
 	const email: IEmail = {
 		id: s3Id,
-		date: response.date,
+		date: new Date(response.date),
 		from: {
 			address: from.address,
 			domain: getDomain(from.address),
