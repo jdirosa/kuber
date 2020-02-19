@@ -15,5 +15,8 @@ export class CreateEmail {
   subject: string;
 
   @Field()
-  body: string;
+  date: Date;
+
+  @Field()
+  domain: string;
 }

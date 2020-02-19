@@ -5,13 +5,15 @@ import { buildSchema } from "type-graphql";
 import { UserResolver, EmailResolver } from "./resolvers";
 import { init } from "./helpers/init";
 
-const reSeed = true;
+const reSeed = false;
 async function start() {
   const connection = await createConnection();
   const schema = await buildSchema({
     resolvers: [UserResolver, EmailResolver]
   });
-  await init(reSeed);
+  if (reSeed) {
+    await init(reSeed);
+  }
 
   const server = new ApolloServer({ schema });
   const { url } = await server.listen(4000);

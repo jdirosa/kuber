@@ -17,6 +17,10 @@ export class User extends BaseEntity {
 
   @Field(() => String)
   @Column()
+  emailAddress: string;
+
+  @Field(() => String)
+  @Column()
   authId: string;
 
   @Field(() => [Email])

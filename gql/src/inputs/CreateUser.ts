@@ -4,4 +4,7 @@ import { InputType, Field } from "type-graphql";
 export class CreateUser {
   @Field()
   authId: string;
+
+  @Field()
+  emailAddress: string;
 }

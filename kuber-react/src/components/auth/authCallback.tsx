@@ -12,8 +12,8 @@ export const AuthCallback: React.FunctionComponent = ({
   const auth = useAuth0();
 
   const query = gql`
-    mutation CreateUser($authId: String!) {
-      createUser(data: { authId: $authId }) {
+    mutation CreateUser($authId: String!, $emailAddress: String!) {
+      createUser(data: { authId: $authId, emailAddress: $emailAddress }) {
         id
         authId
       }

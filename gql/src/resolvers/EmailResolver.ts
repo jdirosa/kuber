@@ -42,9 +42,11 @@ export class EmailResolver {
   @Mutation(() => Email)
   async CreateEmail(@Arg("data") data: CreateEmail) {
     const user = await User.findOne({ where: { id: data.userId } });
-    console.log({ user });
+    console.log({ user, data });
     if (!user) {
-      throw new Error("Unable to create email for a nonexistent user");
+      throw new Error(
+        "Unable to create email for a nonexistent user " + data.userId
+      );
     }
     const email = Email.create(data);
     email.user = user;

@@ -42,6 +42,21 @@ spec:
             - containerPort: 4000
       restartPolicy: Always
 ---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: kuber-mail
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: kuber-mail
+              image: localhost:5000/kuber-mail
+          restartPolicy: OnFailure
+---
 kind: Service
 apiVersion: v1
 metadata:
