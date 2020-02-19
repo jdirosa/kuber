@@ -1,0 +1,38 @@
+{
+  "name": "mail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --config \"./nodemon.json\"/",
+    "docker-build": "docker build -t kuber-mail .",
+    "docker-tag": "docker tag kuber-mail localhost:5000/kuber-mail",
+    "docker-push": "docker push localhost:5000/kuber-mail",
+    "kuber-deploy": "kubectl apply -f ../deployment.yaml",
+    "kuber-kill": "kubectl delete service,deployment,CronJob kuber-mail",
+    "kuber-delete-pods": " kubectl delete pods -l app=kuber-mail",
+    "deploy-to-cluster": "npm run docker-build && npm run docker-tag && npm run docker-push && npm run kuber-delete-pods"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mailparser": "^2.7.0",
+    "@types/nodemailer": "^6.4.0",
+    "nodemon": "^1.19.4",
+    "ts-node": "^8.4.1",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "aws-config": "^1.3.2",
+    "aws-sdk": "^2.619.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "graphql-request": "^1.8.2",
+    "mailparser": "^2.7.7",
+    "nocache": "^2.1.0",
+    "nodemailer": "^6.4.2"
+  }
+}
