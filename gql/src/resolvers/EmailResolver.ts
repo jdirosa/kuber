@@ -3,6 +3,9 @@ import { Email, User } from "../models";
 import { CreateEmail } from "../inputs";
 import { EmailSummary } from "../models/EmailSummary";
 import { BlockedDomains } from "../models/BlockedDomains";
+import { getEmail } from "../services/aws/s3";
+import { IEmail } from "../cloakModels/Email";
+import { HtmlEmail } from "../models/HtmlEmail";
 
 @Resolver()
 export class EmailResolver {
@@ -52,5 +55,18 @@ export class EmailResolver {
     email.user = user;
     await email.save();
     return email;
+  }
+  @Mutation(() => HtmlEmail)
+  async GetEmailHTML(@Arg("data") data: String) {
+    const { from, body, bodyHtml }: IEmail = await getEmail(data.toString());
+    const response: HtmlEmail = {
+      from: {
+        address: from.address,
+        name: from.name
+      },
+      body,
+      bodyHtml
+    };
+    return response;
   }
 }

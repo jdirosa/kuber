@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
-import { IEmail } from "./models/Email";
+import { IEmail } from "../../models/Email";
 import {
   TableHead,
   TableRow,
@@ -13,7 +13,7 @@ import {
   Checkbox
 } from "@material-ui/core";
 
-export const EmailDemo: React.FC = () => {
+export const EmailList: React.FC = () => {
   const query = gql`
     {
       emails {

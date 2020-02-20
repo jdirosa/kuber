@@ -10,7 +10,7 @@ import { defaultTheme } from "./styles/theme";
 import { TopNav } from "./components/layout";
 import { ThemeProvider, CssBaseline, createMuiTheme } from "@material-ui/core";
 import { Home } from "./components/home";
-import { EmailDemo } from "./EmailDemo";
+import { EmailList } from "./components/email";
 import PrivateRoute from "./routes/privateRoute";
 
 const client = new ApolloClient({
@@ -27,7 +27,7 @@ const App = () => {
           <RouterFixed>
             <Route path="/login/callback" component={AuthCallback} />
             <Route path={ROUTES.home} exact component={Home} />
-            <PrivateRoute path={"/email"} exact component={EmailDemo} />
+            <PrivateRoute path={"/email"} exact component={EmailList} />
           </RouterFixed>
         </div>
       </ApolloProvider>
