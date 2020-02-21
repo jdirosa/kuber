@@ -34,4 +34,12 @@ I'll get a diagram up here once things are further along
 
 ## Get it Running
 
-Instructions to follow. This is a personal project and I am not really setting this up for generic set up and go. The instructions here will be mostly to remind myself in the event I leave it for some time
+Instructions to follow. This is a personal project and I am not really setting this up for generic set up and go. The instructions here will be mostly to remind myself in the event I leave it for some time.
+
+NEEDS WORK:
+
+1. Create an envars file for aws creds and point the `deploy.sh` configmap to that file. Make sure the envar names match the `configMapKeyRef` name in the `deployment.yaml` file.
+
+## Tips
+
+- Don't leave clusters running as they are resource hogs. `kill-sh` should clean up anything.

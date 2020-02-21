@@ -37,25 +37,40 @@ spec:
       containers:
         - name: kuber-gql
           image: localhost:5000/kuber-gql
+          env:
+            - name: aws_access_key_id
+              valueFrom:
+                configMapKeyRef:
+                  # The ConfigMap containing the value you want to assign
+                  name: gql-configmap
+                  # Specify the key associated with the value
+                  key: AWS_ACCESS_KEY_ID
+            - name: aws_secret_access_key
+              valueFrom:
+                configMapKeyRef:
+                  # The ConfigMap containing the value you want to assign
+                  name: gql-configmap
+                  # Specify the key associated with the value
+                  key: AWS_SECRET_ACCESS_KEY
           imagePullPolicy: Always
           ports:
             - containerPort: 4000
       restartPolicy: Always
----
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  name: kuber-mail
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-            - name: kuber-mail
-              image: localhost:5000/kuber-mail
-          restartPolicy: OnFailure
+# ---
+# apiVersion: batch/v1beta1
+# kind: CronJob
+# metadata:
+#   name: kuber-mail
+# spec:
+#   schedule: "*/1 * * * *"
+#   jobTemplate:
+#     spec:
+#       template:
+#         spec:
+#           containers:
+#             - name: kuber-mail
+#               image: localhost:5000/kuber-mail
+#           restartPolicy: OnFailure
 ---
 kind: Service
 apiVersion: v1
