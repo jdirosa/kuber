@@ -39,6 +39,7 @@ Instructions to follow. This is a personal project and I am not really setting t
 NEEDS WORK:
 
 1. Create an envars file for aws creds and point the `deploy.sh` configmap to that file. Make sure the envar names match the `configMapKeyRef` name in the `deployment.yaml` file.
+1. Run `deploy.sh`
 
 ## Tips
 
