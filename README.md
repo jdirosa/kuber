@@ -38,10 +38,16 @@ Instructions to follow. This is a personal project and I am not really setting t
 
 NEEDS WORK:
 
+### Initial Setup
+
 1. Create an envars file for aws creds and point the `deploy.sh` configmap to that file. Make sure the envar names match the `configMapKeyRef` name in the `deployment.yaml` file.
 1. Run `deploy.sh`
 1. Visit [localhost:32000](http://localhost:32000) for gql server
 1. Visit [localhost:31000](http://localhost:31000) for React App
+
+### Setup Auth
+
+Will provide steps later
 
 ## Tips
 
