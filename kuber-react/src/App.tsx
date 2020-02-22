@@ -10,7 +10,7 @@ import { defaultTheme } from "./styles/theme";
 import { TopNav } from "./components/layout";
 import { ThemeProvider, CssBaseline, createMuiTheme } from "@material-ui/core";
 import { Home } from "./components/home";
-import { EmailList } from "./components/email";
+import { Emails } from "./components/email";
 import PrivateRoute from "./routes/privateRoute";
 
 const client = new ApolloClient({
@@ -27,7 +27,7 @@ const App = () => {
           <RouterFixed>
             <Route path="/login/callback" component={AuthCallback} />
             <Route path={ROUTES.home} exact component={Home} />
-            <PrivateRoute path={"/email"} exact component={EmailList} />
+            <PrivateRoute path={"/email"} exact component={Emails} />
           </RouterFixed>
         </div>
       </ApolloProvider>
@@ -35,10 +35,4 @@ const App = () => {
   );
 };
 
-const renderWithAuth = (component: JSX.Element, auth: any) => {
-  if (!auth.isAuthenticated) {
-    auth.loginWithRedirect({});
-  }
-  return component;
-};
 export default App;

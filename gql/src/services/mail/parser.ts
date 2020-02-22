@@ -12,8 +12,7 @@ export const parseMail = async (
       address: t.address
     };
   });
-  const { subject, text, textAsHtml } = response;
-
+  const { subject, text, html } = response;
   const email: IEmail = {
     id: s3Id,
     date: new Date(response.date),
@@ -25,7 +24,7 @@ export const parseMail = async (
     to,
     subject,
     body: text,
-    bodyHtml: textAsHtml
+    bodyHtml: html.toString()
   };
   return email;
 };

@@ -40,6 +40,7 @@ spec:
           env:
             - name: aws_access_key_id
               valueFrom:
+                # Note - Config maps are not secure as they are visible to anyone who has access to the cluster
                 configMapKeyRef:
                   # The ConfigMap containing the value you want to assign
                   name: gql-configmap

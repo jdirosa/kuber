@@ -19,7 +19,7 @@ export const AuthCallback: React.FunctionComponent = ({
       }
     }
   `;
-  const [addUser, { data }] = useMutation(query);
+  const [addUser] = useMutation(query);
 
   React.useEffect(() => {
     if (!auth.user) {
@@ -28,7 +28,7 @@ export const AuthCallback: React.FunctionComponent = ({
     const sub: string = auth.user.sub;
     const authId = sub.substr(sub.indexOf("|") + 1);
     addUser({ variables: { authId } });
-  }, [auth.user]);
+  }, [auth.user, addUser]);
   if (!auth.user) {
     return null;
   }
@@ -50,7 +50,11 @@ export const AuthCallback: React.FunctionComponent = ({
   */
   return (
     <div>
-      <img src={auth.user.picture} style={{ width: 120, marginBottom: 30 }} />
+      <img
+        alt="Profile"
+        src={auth.user.picture}
+        style={{ width: 120, marginBottom: 30 }}
+      />
       <div>
         <p>Here's what we know about you</p>
         {Object.keys(auth.user).map((key, i) => (

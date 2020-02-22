@@ -56,7 +56,7 @@ export class EmailResolver {
     await email.save();
     return email;
   }
-  @Mutation(() => HtmlEmail)
+  @Query(() => HtmlEmail)
   async GetEmailHTML(@Arg("data") data: String) {
     const { from, body, bodyHtml }: IEmail = await getEmail(data.toString());
     const response: HtmlEmail = {

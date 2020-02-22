@@ -13,7 +13,11 @@ import {
   Checkbox
 } from "@material-ui/core";
 
-export const EmailList: React.FC = () => {
+interface IProps {
+  onEmailSelected: (email: IEmail) => void;
+}
+export const EmailList: React.FC<IProps> = ({ onEmailSelected }) => {
+  // TODO: Refactor out
   const query = gql`
     {
       emails {
@@ -25,7 +29,7 @@ export const EmailList: React.FC = () => {
       }
     }
   `;
-  const { loading, error, data } = useQuery<{ emails: IEmail[] }>(query);
+  const { loading, data } = useQuery<{ emails: IEmail[] }>(query);
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -33,35 +37,41 @@ export const EmailList: React.FC = () => {
     return null;
   }
 
+  const handleRowClick = (email: IEmail) => (e: React.MouseEvent<any>) => {
+    onEmailSelected(email);
+  };
   return (
-    <React.Fragment>
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>{""}</TableCell>
-              <TableCell>From</TableCell>
-              <TableCell align="left">Subject</TableCell>
-              <TableCell>{""}</TableCell>
+    <TableContainer component={Paper}>
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>{""}</TableCell>
+            <TableCell>From</TableCell>
+            <TableCell align="left">Subject</TableCell>
+            <TableCell>Date</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.emails.map((email, idx) => (
+            <TableRow
+              onClick={handleRowClick(email)}
+              hover
+              key={idx}
+              style={{ cursor: "pointer" }}
+            >
+              <TableCell component="th" scope="row">
+                <Checkbox checked={false} />
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {email.from}
+              </TableCell>
+              <TableCell align="left">{email.subject}</TableCell>
+              <TableCell align="left">{getDate(email.date)}</TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.emails.map((email, idx) => (
-              <TableRow key={idx}>
-                <TableCell component="th" scope="row">
-                  <Checkbox checked={false} />
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {email.from}
-                </TableCell>
-                <TableCell align="left">{email.subject}</TableCell>
-                <TableCell align="left">{getDate(email.date)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </React.Fragment>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 const getDate = (date: any) => {
