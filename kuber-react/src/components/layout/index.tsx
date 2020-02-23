@@ -11,6 +11,8 @@ import {
 import { Theme } from "@material-ui/core/styles";
 import { useAuth0 } from "../../auth/authHook";
 import { Menu as MenuIcon } from "@material-ui/icons";
+import { Envars } from "../../constants";
+import { getEnvar } from "../../utils/envars";
 export const TopNav: React.FC = ({ children }) => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
   const useStyles = makeStyles((theme: Theme) =>
@@ -40,14 +42,14 @@ export const TopNav: React.FC = ({ children }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            mailcloak
+            mailcloak - v0.0.1
           </Typography>
           {isAuthenticated ? (
             <Button
               color="inherit"
               onClick={() =>
                 logout({
-                  returnTo: "http://localhost:3000/"
+                  returnTo: getEnvar(Envars.Url)
                 })
               }
             >
@@ -58,7 +60,7 @@ export const TopNav: React.FC = ({ children }) => {
               color="inherit"
               onClick={() =>
                 loginWithRedirect({
-                  redirect_uri: "http://localhost:3000/login/callback"
+                  redirect_uri: getEnvar(Envars.LoginCallback)
                 })
               }
             >
