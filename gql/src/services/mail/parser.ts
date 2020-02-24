@@ -1,5 +1,5 @@
 import * as mailParser from "mailparser";
-import { IEmail } from "../../cloakModels/Email";
+import { IEmail } from "../../commonModels";
 export const parseMail = async (
   mailString: string,
   s3Id: string

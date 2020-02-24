@@ -1,5 +1,5 @@
 import * as mailParser from "mailparser";
-import { IEmail } from "../Models/Email";
+import { IEmail } from "../models";
 export const parseMail = async (
   mailString: string,
   s3Id: string

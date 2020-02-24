@@ -7,14 +7,19 @@ export class HtmlEmail {
 
   @Field(() => String)
   body: string;
+
   @Field(() => String)
   bodyHtml: string;
+
+  @Field(() => String)
+  subject: string;
 }
 
 @ObjectType()
 export class Address {
   @Field(() => String)
   name: string;
+
   @Field(() => String)
   address: string;
 }

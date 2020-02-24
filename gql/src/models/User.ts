@@ -7,6 +7,7 @@ import {
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { Email } from "./Email";
+import { SentEmail } from "./SentEmail";
 
 @Entity()
 @ObjectType()
@@ -29,4 +30,11 @@ export class User extends BaseEntity {
     email => email.user
   )
   emails: Email[];
+
+  @Field(() => [Email])
+  @OneToMany(
+    type => SentEmail,
+    email => email.user
+  )
+  sendEmails: Email[];
 }

@@ -1,5 +1,5 @@
 import { request } from "graphql-request";
-import { IEmail } from "../Models/Email";
+import { IEmail } from "../models";
 
 export const saveEmail = async (email: IEmail) => {
   const userId = "1"; // TODO: Fix

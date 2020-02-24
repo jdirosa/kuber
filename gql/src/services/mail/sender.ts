@@ -1,7 +1,10 @@
 import * as nodemailer from "nodemailer";
 import { getSMTPCreds } from "../aws/secrets";
+import { formatRecipients } from "./utils/sendMail";
+import { ISendMail } from "../../commonModels";
+import { uploadFile } from "../aws/s3";
 
-export const sendEmail = async () => {
+export const sendEmail = async (data: ISendMail) => {
   const creds = await getSMTPCreds(); // TODO: load once.. should not load per call
   let transporter = nodemailer.createTransport({
     host: "email-smtp.us-east-1.amazonaws.com",
@@ -13,16 +16,21 @@ export const sendEmail = async () => {
     }
   });
 
-  // send mail with defined transport object
-  let info = await transporter.sendMail(
+  // Send Email
+  const { from, to, subject, text, html } = data;
+  transporter.sendMail(
     {
-      from: '"Fred Foo 👻" <me@mailcloaked.com>', // sender address
-      to: "Jimmy, <test@mailcloaked.com>", // list of receivers
-      subject: "Hello ✔", // Subject line
-      text: "Hello world?", // plain text body
-      html: "<b>Hello world?</b>" // html body
+      from: from,
+      to: formatRecipients(to),
+      subject: subject,
+      text,
+      html: html ? html : `<p>${text}</p>`
     },
-    null
+    (err, info) => console.log({ err, info })
   );
-  console.log({ info });
+
+  // Upload to s3
+  const result = await uploadFile(data, "sent");
+  console.log(`sent ID ${result}`);
+  return result;
 };

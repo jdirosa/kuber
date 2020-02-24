@@ -1,5 +1,5 @@
 import * as AWS from "aws-sdk";
-import { SMTPCreds } from "../Models/SMTPCreds";
+import { SMTPCreds } from "../models/SMTPCreds";
 
 const region = "us-east-1";
 const KEYS = {
@@ -8,7 +8,9 @@ const KEYS = {
 
 // Create a Secrets Manager client
 var client = new AWS.SecretsManager({
-  region: region
+  region: region,
+  accessKeyId: process.env.aws_access_key_id,
+  secretAccessKey: process.env.aws_secret_access_key
 });
 
 export const getSMTPCreds = async (): Promise<SMTPCreds> => {
@@ -18,6 +20,8 @@ export const getSMTPCreds = async (): Promise<SMTPCreds> => {
       .promise();
     return handleGetValue(response);
   } catch (err) {
+    console.log("oops, err");
+    console.error(err);
     handleSecretError(err);
   }
   return null;
@@ -48,6 +52,7 @@ const handleSecretError = (err: AWS.AWSError) => {
 const handleGetValue = (
   data: AWS.SecretsManager.GetSecretValueResponse
 ): SMTPCreds => {
+  console.log(data);
   if ("SecretString" in data) {
     return JSON.parse(data.SecretString);
   }

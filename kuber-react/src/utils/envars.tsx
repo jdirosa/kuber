@@ -4,6 +4,5 @@ export function getEnvar(envar: Envars) {
   if (!result || result === "") {
     throw new Error("Missing envar: " + envar);
   }
-  console.log({ envar: result });
   return result;
 }

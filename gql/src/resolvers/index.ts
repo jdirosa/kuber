@@ -1,2 +1,2 @@
-export * from "./UserResolver";
-export * from "./EmailResolver";
+export * from "./userResolver";
+export * from "./emailResolver";

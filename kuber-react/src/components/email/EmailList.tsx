@@ -12,6 +12,7 @@ import {
   TableBody,
   Checkbox
 } from "@material-ui/core";
+import { getDisplayDate } from "./utils";
 
 interface IProps {
   onEmailSelected: (email: IEmail) => void;
@@ -66,22 +67,11 @@ export const EmailList: React.FC<IProps> = ({ onEmailSelected }) => {
                 {email.from}
               </TableCell>
               <TableCell align="left">{email.subject}</TableCell>
-              <TableCell align="left">{getDate(email.date)}</TableCell>
+              <TableCell align="left">{getDisplayDate(email.date)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-};
-const getDate = (date: any) => {
-  const d = new Date(date);
-  if (d.getDay() === new Date().getDay()) {
-    const time = d.toLocaleTimeString();
-    return (
-      time.substr(0, time.lastIndexOf(":")) +
-      time.substr(time.lastIndexOf(":") + 3) // This is not world safe
-    );
-  }
-  return d.toLocaleDateString();
 };

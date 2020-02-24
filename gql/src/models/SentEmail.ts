@@ -4,19 +4,14 @@ import { User } from "./User";
 
 @Entity()
 @ObjectType()
-export class Email extends BaseEntity {
+export class SentEmail extends BaseEntity {
   @Field(() => ID)
   @PrimaryColumn()
   id: string;
 
   @Field(() => String)
   @Column({ default: "" })
-  from: string;
-
-  // TODO: Probably get rid of this
-  @Field(() => String)
-  @Column({ default: "" })
-  domain: string;
+  to: string;
 
   @Field(() => User)
   @ManyToOne(
