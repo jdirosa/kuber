@@ -28,6 +28,12 @@ Some notes along the way.
 1. Deploy all the k8s
 1. Setup AWS sdk to work from k8s. Needs IAM roles if in prod, or envars for locals
 
+## Before Deploy
+
+- Get a solid refactor in
+- Make naming consistent
+- Create shared model npm package or, at least, a script to pull them in before building
+
 ## Project Structure
 
 I'll get a diagram up here once things are further along
