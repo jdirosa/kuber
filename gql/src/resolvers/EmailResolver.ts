@@ -13,10 +13,19 @@ import { IEmail } from "../commonModels";
 export class EmailResolver {
   @Query(() => [Email])
   async emails() {
-    const emails = await Email.find({ relations: ["user"] });
-    return emails.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    ); // TODO: Let sql do the sorting
+    const emails = await Email.find({
+      relations: ["user"],
+      order: { date: "DESC" }
+    });
+    return emails;
+  }
+  @Query(() => [SentEmail])
+  async sentEmails() {
+    const emails = await SentEmail.find({
+      relations: ["user"],
+      order: { date: "DESC" }
+    });
+    return emails;
   }
   @Query(() => Email)
   email(@Arg("id") id: string) {
@@ -78,7 +87,7 @@ export class EmailResolver {
     try {
       console.log("Sending!");
       id = await sendEmail({
-        from: '"Mail Cloak Ghost 👻" <me@mailcloaked.com>',
+        from: '"Ghost 👻" <jimmy@mailcloaked.com>',
         sentDate: date,
         subject: data.subject,
         to: data.to.map(t => {

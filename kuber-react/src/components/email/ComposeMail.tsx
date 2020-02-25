@@ -41,17 +41,28 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const ComposeEmail: React.FC = () => {
+  const [to, setTo] = React.useState("");
+  const [subject, setSubject] = React.useState("");
+  const [html, setHtml] = React.useState("");
   const [sendEmail, { data, error }] = useMutation(SEND_EMAIL);
+  const handleToUpdated = (e: React.ChangeEvent<any>) => {
+    setTo(e.target.value);
+  };
+  const handleSubjectUpdated = (e: React.ChangeEvent<any>) => {
+    setSubject(e.target.value);
+  };
+  const handleHtmlUpdated = (e: React.ChangeEvent<any>) => {
+    setHtml(e.target.value);
+  };
   const handleSendEmail = async () => {
-    const fakeEmail: ISendEmail = {
-      subject: "React Email",
-      to: ["jdirosa@gmail.com"],
+    const email: ISendEmail = {
+      subject,
+      to: [to],
       userId: "1",
-      html: "<strong>React</strong> message",
-      text: "the text"
+      html: html,
+      text: ""
     };
-    const result = await sendEmail({ variables: { data: { ...fakeEmail } } });
-    console.error(result.errors);
+    const result = await sendEmail({ variables: { data: { ...email } } });
   };
   const classes = useStyles();
   return (
@@ -62,9 +73,18 @@ export const ComposeEmail: React.FC = () => {
       {/* Body */}
       <div className={classes.body}>
         <div className={classes.inputRow}>
-          <TextField fullWidth label="To" />
-          <TextField fullWidth label="Subject" />
-          <TextField fullWidth multiline rows={10} />
+          <TextField onChange={handleToUpdated} fullWidth label="To" />
+          <TextField
+            onChange={handleSubjectUpdated}
+            fullWidth
+            label="Subject"
+          />
+          <TextField
+            onChange={handleHtmlUpdated}
+            fullWidth
+            multiline
+            rows={10}
+          />
         </div>
       </div>
       <div className={classes.buttonRow}>

@@ -27,8 +27,4 @@ export class SentEmail extends BaseEntity {
   @Field(() => String)
   @Column({ default: "" })
   subject: string;
-
-  @Field(() => Boolean)
-  @Column({ default: false })
-  read: boolean;
 }

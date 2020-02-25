@@ -8,11 +8,12 @@ import {
   Theme,
   createStyles
 } from "@material-ui/core";
-import { Inbox, Archive, DeleteForever, Add } from "@material-ui/icons";
+import { Inbox, Archive, DeleteForever, Add, Send } from "@material-ui/icons";
 import { EmailList } from "./EmailList";
 import { IEmail } from "../../models/Email";
 import { Email } from "./Email";
 import { ComposeEmail } from "./ComposeMail";
+import { SentEmailList } from "./SentEmailList";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,17 +24,17 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
+enum View {
+  compose,
+  sent,
+  inbox
+}
 export const Emails: React.FC = () => {
   const [activeEmail, setActiveEmail] = React.useState<IEmail>();
-  const [composeMail, setComposeMail] = React.useState();
+  const [view, setView] = React.useState<View>();
   const handleEmailSelected = (email: IEmail) => setActiveEmail(email);
-  const handleComposeEmail = (e: React.MouseEvent<any>) => {
-    setComposeMail(true);
-    setActiveEmail(undefined);
-  };
-  const handleViewInbox = (e: React.MouseEvent<any>) => {
-    setComposeMail(false);
+  const handleChangeView = (view: View) => (e: React.MouseEvent<any>) => {
+    setView(view);
     setActiveEmail(undefined);
   };
   const classes = useStyles();
@@ -42,7 +43,7 @@ export const Emails: React.FC = () => {
       <Grid container spacing={4}>
         <Grid item sm={3}>
           <Fab
-            onClick={handleComposeEmail}
+            onClick={handleChangeView(View.compose)}
             className={classes.compose}
             variant="extended"
           >
@@ -57,11 +58,18 @@ export const Emails: React.FC = () => {
             variant="contained"
           >
             <Button
-              onClick={handleViewInbox}
+              onClick={handleChangeView(View.inbox)}
               size="large"
               startIcon={<Inbox />}
             >
               Inbox
+            </Button>
+            <Button
+              onClick={handleChangeView(View.sent)}
+              size="large"
+              startIcon={<Send />}
+            >
+              Sent
             </Button>
             <Button size="large" startIcon={<Archive />}>
               Archive
@@ -72,10 +80,12 @@ export const Emails: React.FC = () => {
           </ButtonGroup>
         </Grid>
         <Grid item sm={9}>
-          {composeMail ? (
-            <ComposeEmail />
-          ) : activeEmail ? (
+          {activeEmail ? (
             <Email emailId={activeEmail.id} />
+          ) : view === View.compose ? (
+            <ComposeEmail />
+          ) : view === View.sent ? (
+            <SentEmailList onEmailSelected={() => null} />
           ) : (
             <EmailList onEmailSelected={handleEmailSelected} />
           )}

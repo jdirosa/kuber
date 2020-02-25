@@ -6,3 +6,9 @@ export interface IEmail {
   subject: string;
   read: boolean;
 }
+export interface ISentEmail {
+  id: string;
+  date: Date;
+  to: string;
+  subject: string;
+}

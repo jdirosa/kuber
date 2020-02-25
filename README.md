@@ -21,12 +21,11 @@ Some notes along the way.
    `docker tag [APPNAME] localhost:5000/[APPNAME]`
    `docker tag kuber-react localhost:5000/kuber-react`
 
-## Next Steps
+## Next Up
 
-1. Cleanup lambda resources (I created some dummy onces to test stuff out)
-1. Update webapi to work in kluster
-1. Deploy all the k8s
-1. Setup AWS sdk to work from k8s. Needs IAM roles if in prod, or envars for locals
+- Send Email should close and reset state on sent
+- Need to be able to delete
+- View for sent email
 
 ## Before Deploy
 

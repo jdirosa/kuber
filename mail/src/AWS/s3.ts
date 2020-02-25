@@ -14,7 +14,7 @@ export const syncEmails = async () => {
   );
 
   if (!items.length) {
-    console.log("No emails to process at this time");
+    console.log("🤖 I Couldn't find any emails to sync.");
     return [];
   }
   for (const c of items) {
