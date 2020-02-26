@@ -1,16 +1,12 @@
 import { request } from "graphql-request";
 import { IEmail } from "../models";
+import { CreateEmailMutation } from "./mutations/CreateEmail";
+import { gqlHost } from "./route";
 
 export const saveEmail = async (email: IEmail) => {
   const userId = "1"; // TODO: Fix
-  const mut = `mutation {
-	CreateEmail(
-	  data: { id: "${email.id}", from: "${email.from.address}", userId: "${userId}", subject: "${email.subject}", date: "${email.date}", domain: "${email.from.domain}" }
-	) {
-	  id
-	}
-  }`;
+  const mut = CreateEmailMutation(email, userId);
 
-  const response = await request("http://localhost:32000", mut);
+  const response = await request(gqlHost(), mut);
   return response;
 };

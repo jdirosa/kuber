@@ -2,7 +2,10 @@ import * as AWS from "aws-sdk";
 import { parseMail } from "../Mail/parser";
 import { saveEmail } from "../gql/email";
 
-const s3 = new AWS.S3({});
+const s3 = new AWS.S3({
+  accessKeyId: process.env.aws_access_key_id,
+  secretAccessKey: process.env.aws_secret_access_key
+});
 const bucket = "jamesdirosa-email";
 // TODO: Isolate aws functions and create a sync function outside of the AWS file
 export const syncEmails = async () => {
@@ -19,10 +22,6 @@ export const syncEmails = async () => {
   }
   for (const c of items) {
     try {
-      // skip the processed
-      if (c.Key.indexOf("processed") >= 0) {
-        continue;
-      }
       // Get the email
       const email = await s3
         .getObject({
@@ -54,6 +53,7 @@ export const syncEmails = async () => {
         .promise();
     } catch (err) {
       console.error("Unable to move file ", err);
+      throw new Error(err);
     }
   }
 

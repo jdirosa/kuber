@@ -80,21 +80,44 @@ spec:
           ports:
             - containerPort: 4000
       restartPolicy: Always
-# ---
-# apiVersion: batch/v1beta1
-# kind: CronJob
-# metadata:
-#   name: kuber-mail
-# spec:
-#   schedule: "*/1 * * * *"
-#   jobTemplate:
-#     spec:
-#       template:
-#         spec:
-#           containers:
-#             - name: kuber-mail
-#               image: localhost:5000/kuber-mail
-#           restartPolicy: OnFailure
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kuber-mail
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kuber-mail
+  template:
+    metadata:
+      labels:
+        app: kuber-mail
+    spec:
+      containers:
+        - name: kuber-mail
+          image: localhost:5000/kuber-mail
+          env:
+            - name: aws_access_key_id
+              valueFrom:
+                # Note - Config maps are not secure as they are visible to anyone who has access to the cluster
+                configMapKeyRef:
+                  # The ConfigMap containing the value you want to assign
+                  name: mail-configmap
+                  # Specify the key associated with the value
+                  key: AWS_ACCESS_KEY_ID
+            - name: aws_secret_access_key
+              valueFrom:
+                configMapKeyRef:
+                  # The ConfigMap containing the value you want to assign
+                  name: mail-configmap
+                  # Specify the key associated with the value
+                  key: AWS_SECRET_ACCESS_KEY
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4001
+      restartPolicy: Always
 ---
 kind: Service
 apiVersion: v1
