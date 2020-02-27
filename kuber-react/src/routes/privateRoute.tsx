@@ -1,9 +1,27 @@
 import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 import { useAuth0 } from "../auth/authHook";
+import ApolloClient, { PresetConfig } from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+
+const cnfg = (token: string) => {
+  const config: PresetConfig = {
+    uri: "http://localhost:32000",
+    request: (operation: any) => {
+      operation.setContext((context: Record<string, any>) => ({
+        headers: {
+          ...context.headers,
+          authorization: token
+        }
+      }));
+    }
+  };
+  return config;
+};
+const client = (token: any) => new ApolloClient(cnfg(token));
 
 const PrivateRoute = ({ component: Component, path, ...rest }: any) => {
-  const { loading, isAuthenticated, loginWithRedirect } = useAuth0()!;
+  const { loading, isAuthenticated, loginWithRedirect, token } = useAuth0()!;
 
   useEffect(() => {
     if (loading || isAuthenticated) {
@@ -20,7 +38,11 @@ const PrivateRoute = ({ component: Component, path, ...rest }: any) => {
   const render = (props: any) =>
     isAuthenticated === true ? <Component {...props} /> : null;
 
-  return <Route path={path} render={render} {...rest} />;
+  return (
+    <ApolloProvider client={client(token)}>
+      <Route path={path} render={render} {...rest} />
+    </ApolloProvider>
+  );
 };
 
 export default PrivateRoute;

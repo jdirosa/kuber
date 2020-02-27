@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Arg } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, Ctx } from "type-graphql";
 import { Email, User } from "../models";
 import { CreateEmail, SendEmail } from "../inputs";
 import { EmailSummary } from "../models/EmailSummary";
@@ -8,11 +8,14 @@ import { HtmlEmail } from "../models/HtmlEmail";
 import { SentEmail } from "../models/SentEmail";
 import { sendEmail } from "../services/mail/sender";
 import { IEmail } from "../commonModels";
+import { getAuthUser } from "../auth/auth0";
+import { Context } from "../auth/models";
 
 @Resolver()
 export class EmailResolver {
   @Query(() => [Email])
-  async emails() {
+  async emails(@Ctx() ctx: Context) {
+    await getAuthUser(ctx);
     const emails = await Email.find({
       relations: ["user"],
       order: { date: "DESC" }
@@ -71,7 +74,7 @@ export class EmailResolver {
   async SendEmail(@Arg("data") data: SendEmail) {
     console.log("looking for user");
     const user = await User.findOne({ where: { id: data.userId } });
-
+    user.emailAddress;
     if (!user) {
       throw new Error(
         "Unable to create email for a nonexistent user " + data.userId
@@ -87,7 +90,7 @@ export class EmailResolver {
     try {
       console.log("Sending!");
       id = await sendEmail({
-        from: '"Ghost 👻" <jimmy@mailcloaked.com>',
+        from: '"Jimmy 👻" <jimmy@mailcloaked.com>', // TODO Get from DB
         sentDate: date,
         subject: data.subject,
         to: data.to.map(t => {

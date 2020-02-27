@@ -24,6 +24,8 @@
     "aws-sdk": "^2.619.0",
     "axios": "^0.19.2",
     "graphql": "^14.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.7.0",
     "mailparser": "^2.7.7",
     "mysql": "^2.18.1",
     "nodemailer": "^6.4.2",
@@ -32,6 +34,7 @@
     "typeorm": "^0.2.22"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^8.3.7",
     "@types/mailparser": "^2.7.0",
     "@types/nodemailer": "^6.4.0",
     "nodemon": "^1.19.4",

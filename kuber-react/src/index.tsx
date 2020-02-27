@@ -15,7 +15,6 @@ const onRedirectCallback = (appState: any) => {
       : window.location.pathname
   );
 };
-console.log({ config });
 ReactDOM.render(
   <Auth0Provider
     domain={config.domain}

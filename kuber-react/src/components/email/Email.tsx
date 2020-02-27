@@ -12,9 +12,6 @@ export const Email: React.FC<IProps> = ({ emailId }) => {
     variables: { data: emailId }
   });
 
-  React.useEffect(() => {
-    console.log("getting: " + emailId);
-  }, []);
   if (loading) {
     return <div>Reading Email...</div>;
   }

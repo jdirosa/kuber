@@ -13,24 +13,19 @@ import { Home } from "./components/home";
 import { Emails } from "./components/email";
 import PrivateRoute from "./routes/privateRoute";
 
-const client = new ApolloClient({
-  uri: "http://localhost:32000"
-});
 const theme = createMuiTheme(defaultTheme);
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ApolloProvider client={client}>
-        <TopNav />
-        <div style={{ padding: 20 }}>
-          <RouterFixed>
-            <Route path="/login/callback" component={AuthCallback} />
-            <Route path={ROUTES.home} exact component={Home} />
-            <PrivateRoute path={"/email"} exact component={Emails} />
-          </RouterFixed>
-        </div>
-      </ApolloProvider>
+      <TopNav />
+      <div style={{ padding: 20 }}>
+        <RouterFixed>
+          <Route path="/login/callback" component={AuthCallback} />
+          <Route path={ROUTES.home} exact component={Home} />
+          <PrivateRoute path={"/email"} exact component={Emails} />
+        </RouterFixed>
+      </div>
     </ThemeProvider>
   );
 };
