@@ -39,3 +39,22 @@ export async function uploadFile(body: any, folder?: string) {
   }
   return id;
 }
+
+export async function moveFile(key: string, destinationKey: string) {
+  // Move to processed folder
+  await s3
+    .copyObject({
+      Bucket: bucket,
+      CopySource: `${bucket}/${key}`,
+      Key: destinationKey
+    })
+    .promise();
+
+  // Delete from original bucket
+  await s3
+    .deleteObject({
+      Bucket: bucket,
+      Key: key
+    })
+    .promise();
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import { IEmail } from "../../models/Email";
 import {
@@ -13,33 +13,36 @@ import {
   Checkbox
 } from "@material-ui/core";
 import { getDisplayDate } from "./utils";
+import { DELETE_EMAIL } from "./gql";
 
 interface IProps {
   onEmailSelected: (email: IEmail) => void;
+  onEmailChecked: (email: IEmail) => void;
+  selectedEmails: string[];
+  emails?: IEmail[];
 }
-export const EmailList: React.FC<IProps> = ({ onEmailSelected }) => {
-  // TODO: Refactor out
-  const query = gql`
-    {
-      emails {
-        id
-        from
-        date
-        subject
-        read
-      }
-    }
-  `;
-  const { loading, data } = useQuery<{ emails: IEmail[] }>(query);
-  if (loading) {
+export const EmailList: React.FC<IProps> = ({
+  onEmailSelected,
+  selectedEmails,
+  onEmailChecked,
+  emails
+}) => {
+  if (!emails) {
     return <div>Loading...</div>;
   }
-  if (!data) {
+  if (!emails.length) {
     return null;
   }
 
   const handleRowClick = (email: IEmail) => (e: React.MouseEvent<any>) => {
+    e.preventDefault();
+    e.stopPropagation();
     onEmailSelected(email);
+  };
+  const handleCheck = (email: IEmail) => (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onEmailChecked(email);
   };
   return (
     <TableContainer component={Paper}>
@@ -53,7 +56,7 @@ export const EmailList: React.FC<IProps> = ({ onEmailSelected }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.emails.map((email, idx) => (
+          {emails.map((email, idx) => (
             <TableRow
               onClick={handleRowClick(email)}
               hover
@@ -61,7 +64,10 @@ export const EmailList: React.FC<IProps> = ({ onEmailSelected }) => {
               style={{ cursor: "pointer" }}
             >
               <TableCell component="th" scope="row">
-                <Checkbox checked={false} />
+                <Checkbox
+                  checked={selectedEmails.some(e => e === email.id)}
+                  onClick={handleCheck(email)}
+                />
               </TableCell>
               <TableCell component="th" scope="row">
                 {email.from}

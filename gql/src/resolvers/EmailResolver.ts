@@ -3,7 +3,7 @@ import { Email, User } from "../models";
 import { CreateEmail, SendEmail } from "../inputs";
 import { EmailSummary } from "../models/EmailSummary";
 import { BlockedDomains } from "../models/BlockedDomains";
-import { getEmail } from "../services/aws/s3";
+import { getEmail, moveFile } from "../services/aws/s3";
 import { HtmlEmail } from "../models/HtmlEmail";
 import { SentEmail } from "../models/SentEmail";
 import { sendEmail } from "../services/mail/sender";
@@ -55,6 +55,13 @@ export class EmailResolver {
       emailSummary.push(summary);
     }
     return emailSummary;
+  }
+  @Mutation(() => Number)
+  async DeleteEmail(@Arg("data") data: string) {
+    await moveFile(`processed/${data}`, `deleted/${data}`);
+    await Email.delete(data);
+
+    return 1;
   }
   @Mutation(() => Email)
   async CreateEmail(@Arg("data") data: CreateEmail) {

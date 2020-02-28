@@ -1,6 +1,6 @@
 import React from "react";
 import { Wizzy } from "../wysiwyg";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { GET_EMAIL_HTML, SEND_EMAIL } from "./gql";
 import { Paper, Typography } from "@material-ui/core";
 

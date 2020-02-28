@@ -22,3 +22,8 @@ export const SEND_EMAIL = gql`
     }
   }
 `;
+export const DELETE_EMAIL = gql`
+  mutation($data: String!) {
+    DeleteEmail(data: $data)
+  }
+`;

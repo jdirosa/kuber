@@ -13,7 +13,10 @@ export const syncEmails = async () => {
   const allFiles = await s3.listObjectsV2({ Bucket: bucket }).promise();
 
   const items = allFiles.Contents.filter(
-    c => c.Key.indexOf("processed") === -1 && c.Key.indexOf("sent") === -1
+    c =>
+      c.Key.indexOf("processed") === -1 &&
+      c.Key.indexOf("sent") === -1 &&
+      c.Key.indexOf("deleted")
   );
 
   if (!items.length) {
@@ -33,24 +36,10 @@ export const syncEmails = async () => {
       // Parse it and save to DB
       const parsedEmail = await parseMail(email.Body.toString(), c.Key);
       const saveEmailResponse = await saveEmail(parsedEmail);
-      console.log(saveEmailResponse);
 
       // Move to processed folder
-      await s3
-        .copyObject({
-          Bucket: bucket,
-          CopySource: `${bucket}/${c.Key}`,
-          Key: `processed/${c.Key}`
-        })
-        .promise();
-
-      // Delete from original bucket
-      await s3
-        .deleteObject({
-          Bucket: bucket,
-          Key: c.Key
-        })
-        .promise();
+      await moveFile(c.Key, `processed/${c.Key}`);
+      console.log(saveEmailResponse);
     } catch (err) {
       console.error("Unable to move file ", err);
       throw new Error(err);
@@ -76,4 +65,23 @@ export async function uploadFile(body: any, folder?: string) {
     throw new Error(result.$response.error.message);
   }
   return id;
+}
+
+export async function moveFile(key: string, destinationKey: string) {
+  // Move to processed folder
+  await s3
+    .copyObject({
+      Bucket: bucket,
+      CopySource: `${bucket}/${key}`,
+      Key: destinationKey
+    })
+    .promise();
+
+  // Delete from original bucket
+  await s3
+    .deleteObject({
+      Bucket: bucket,
+      Key: key
+    })
+    .promise();
 }
