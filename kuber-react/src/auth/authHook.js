@@ -1,6 +1,7 @@
 // src/react-auth0-spa.js
 import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
+import cookie from "js-cookie";
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname);
@@ -15,10 +16,12 @@ export const Auth0Provider = ({
   const [isAuthenticated, setIsAuthenticated] = useState();
   const [user, setUser] = useState();
   const [auth0Client, setAuth0] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
   const [token, setToken] = useState();
+
   useEffect(() => {
+    cookie.remove("auth0.is.authenticated");
     const initAuth0 = async () => {
       const auth0FromHook = await createAuth0Client(initOptions);
       setAuth0(auth0FromHook);
@@ -27,8 +30,12 @@ export const Auth0Provider = ({
         window.location.search.includes("code=") &&
         window.location.search.includes("state=")
       ) {
-        const { appState } = await auth0FromHook.handleRedirectCallback();
-        onRedirectCallback(appState);
+        try {
+          const { appState } = await auth0FromHook.handleRedirectCallback();
+          onRedirectCallback(appState);
+        } catch (e) {
+          console.error(e);
+        }
       }
 
       const isAuthenticated = await auth0FromHook.isAuthenticated();
@@ -72,7 +79,7 @@ export const Auth0Provider = ({
     setUser(user);
   };
 
-  return (
+  return auth0Client ? (
     <Auth0Context.Provider
       value={{
         isAuthenticated,
@@ -91,5 +98,16 @@ export const Auth0Provider = ({
     >
       {children}
     </Auth0Context.Provider>
-  );
+  ) : null;
 };
+
+// This is ugly, but something odd is going on with auth0 not grabbing the right auth. Could be an nginx thing.
+function cleanUpAuthCookies() {
+  const cookieNames = Object.keys(cookie.get());
+  const filteredCookies = cookieNames.filter(c => c.indexOf("a0.spajs") >= 0);
+
+  for (let c of filteredCookies) {
+    cookie.remove(c);
+  }
+  cookie.remove("auth0.is.authenticated");
+}

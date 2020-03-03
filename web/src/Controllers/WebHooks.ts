@@ -20,7 +20,6 @@ export class WebHooks {
 			parsedEmails.push(parsed);
 		}
 
-		console.log(parsedEmails);
 		res.status(200).json(parsedEmails);
 	}
 }

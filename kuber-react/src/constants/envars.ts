@@ -1,5 +1,5 @@
 export enum Envars {
-  LoginCallback = "REACT_APP_LOGIN_CALLBACK",
+  LoginCallback = "REACT_APP_LOGIN_CB",
   GqlClient = "REACT_APP_GQL_CLIENT",
-  Url = "URL"
+  Url = "REACT_APP_URL"
 }

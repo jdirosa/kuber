@@ -5,7 +5,6 @@
 export function getDisplayDate(date: Date) {
   const d = new Date(date);
   if (isToday(d)) {
-    console.log({ date, d });
     const time = d.toLocaleTimeString();
     return (
       time.substr(0, time.lastIndexOf(":")) +

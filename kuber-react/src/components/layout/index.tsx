@@ -42,7 +42,7 @@ export const TopNav: React.FC = ({ children }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            mailcloak - v0.0.1
+            mailcloak - v0.0.3
           </Typography>
           {isAuthenticated ? (
             <Button
@@ -60,7 +60,7 @@ export const TopNav: React.FC = ({ children }) => {
               color="inherit"
               onClick={() =>
                 loginWithRedirect({
-                  redirect_uri: getEnvar(Envars.LoginCallback)
+                  appState: { targetUrl: getEnvar(Envars.LoginCallback) }
                 })
               }
             >

@@ -5,7 +5,7 @@ export const parseMail = async (
 	s3Id: string
 ): Promise<IEmail> => {
 	const response = await mailParser.simpleParser(mailString);
-	console.log(JSON.stringify(response, null, 2));
+
 	const from = response.from.value[0];
 	const to = response.to.value.map(t => {
 		return {

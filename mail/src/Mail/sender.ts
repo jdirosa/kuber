@@ -6,7 +6,7 @@ import { uploadFile } from "../aws/s3";
 
 export const sendEmail = async (data: ISendMail) => {
   const creds = await getSMTPCreds(); // TODO: load once.. should not load per call
-  console.log({ creds });
+
   let transporter = nodemailer.createTransport({
     host: "email-smtp.us-east-1.amazonaws.com",
     port: 465,

@@ -31,6 +31,5 @@ export const sendEmail = async (data: ISendMail) => {
 
   // Upload to s3
   const result = await uploadFile(data, "sent");
-  console.log(`sent ID ${result}`);
   return result;
 };

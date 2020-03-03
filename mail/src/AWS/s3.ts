@@ -39,7 +39,6 @@ export const syncEmails = async () => {
 
       // Move to processed folder
       await moveFile(c.Key, `processed/${c.Key}`);
-      console.log(saveEmailResponse);
     } catch (err) {
       console.error("Unable to move file ", err);
       throw new Error(err);

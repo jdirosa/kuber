@@ -3,7 +3,7 @@ import { getSMTPCreds } from "../AWS/secrets";
 
 export const sendEmail = async () => {
 	const creds = await getSMTPCreds(); // TODO: load once.. should not load per call
-	console.log({ creds });
+
 	let transporter = nodemailer.createTransport({
 		host: "email-smtp.us-east-1.amazonaws.com",
 		port: 465,
@@ -25,5 +25,4 @@ export const sendEmail = async () => {
 		},
 		null
 	);
-	console.log({ info });
 };

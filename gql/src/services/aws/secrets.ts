@@ -20,8 +20,6 @@ export const getSMTPCreds = async (): Promise<SMTPCreds> => {
       .promise();
     return handleGetValue(response);
   } catch (err) {
-    console.log("oops, err");
-    console.error(err);
     handleSecretError(err);
   }
   return null;

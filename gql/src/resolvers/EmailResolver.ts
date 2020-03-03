@@ -10,6 +10,7 @@ import { sendEmail } from "../services/mail/sender";
 import { IEmail } from "../commonModels";
 import { getAuthUser } from "../auth/auth0";
 import { Context } from "../auth/models";
+import { log, logError } from "../utils";
 
 @Resolver()
 export class EmailResolver {
@@ -23,7 +24,8 @@ export class EmailResolver {
     return emails;
   }
   @Query(() => [SentEmail])
-  async sentEmails() {
+  async sentEmails(@Ctx() ctx: Context) {
+    await getAuthUser(ctx);
     const emails = await SentEmail.find({
       relations: ["user"],
       order: { date: "DESC" }
@@ -31,11 +33,13 @@ export class EmailResolver {
     return emails;
   }
   @Query(() => Email)
-  email(@Arg("id") id: string) {
+  async email(@Arg("id") id: string, @Ctx() ctx: Context) {
+    await getAuthUser(ctx);
     return Email.findOne({ where: { id }, relations: ["user"] });
   }
   @Query(() => [EmailSummary])
-  async emailSummary(@Arg("userAuthId") id: string) {
+  async emailSummary(@Arg("userAuthId") id: string, @Ctx() ctx: Context) {
+    await getAuthUser(ctx);
     const user = await User.findOne({ where: { authId: id } });
     const emailSummary: EmailSummary[] = [];
     if (!user) {
@@ -57,16 +61,17 @@ export class EmailResolver {
     return emailSummary;
   }
   @Mutation(() => Number)
-  async DeleteEmail(@Arg("data") data: string) {
+  async DeleteEmail(@Arg("data") data: string, @Ctx() ctx: Context) {
+    await getAuthUser(ctx);
     await moveFile(`processed/${data}`, `deleted/${data}`);
     await Email.delete(data);
 
     return 1;
   }
   @Mutation(() => Email)
-  async CreateEmail(@Arg("data") data: CreateEmail) {
+  async CreateEmail(@Arg("data") data: CreateEmail, @Ctx() ctx: Context) {
+    // await getAuthUser(ctx);
     const user = await User.findOne({ where: { id: data.userId } });
-    console.log({ user, data });
     if (!user) {
       throw new Error(
         "Unable to create email for a nonexistent user " + data.userId
@@ -78,8 +83,9 @@ export class EmailResolver {
     return email;
   }
   @Mutation(() => SentEmail)
-  async SendEmail(@Arg("data") data: SendEmail) {
-    console.log("looking for user");
+  async SendEmail(@Arg("data") data: SendEmail, @Ctx() ctx: Context) {
+    await getAuthUser(ctx);
+
     const user = await User.findOne({ where: { id: data.userId } });
     user.emailAddress;
     if (!user) {
@@ -87,15 +93,12 @@ export class EmailResolver {
         "Unable to create email for a nonexistent user " + data.userId
       );
     }
-    console.log("found user");
-    console.log(user);
     if (!data.html && !data.text) {
       throw new Error("One of HTML or Text must be provided");
     }
     const date = new Date();
     let id = "";
     try {
-      console.log("Sending!");
       id = await sendEmail({
         from: '"Jimmy 👻" <jimmy@mailcloaked.com>', // TODO Get from DB
         sentDate: date,
@@ -106,14 +109,12 @@ export class EmailResolver {
         html: data.html,
         text: data.text
       });
-      console.log("Sent");
+      log("email sent!", { id, to: data.subject });
     } catch (e) {
-      console.error("Error sending email");
-      console.error(e);
-      throw new Error("Failure while sending");
+      logError("Error sending email");
+      throw new Error(e);
     }
 
-    console.log("Creating email with id " + id);
     const email = SentEmail.create({
       id,
       date: new Date(),
@@ -122,12 +123,12 @@ export class EmailResolver {
     });
     email.user = user;
     await email.save();
-    console.log("returning email");
-    console.log(email);
+
     return email;
   }
   @Query(() => HtmlEmail)
-  async GetEmailHTML(@Arg("data") data: String) {
+  async GetEmailHTML(@Arg("data") data: String, @Ctx() ctx: Context) {
+    await getAuthUser(ctx);
     const { from, body, bodyHtml, subject }: IEmail = await getEmail(
       data.toString()
     );

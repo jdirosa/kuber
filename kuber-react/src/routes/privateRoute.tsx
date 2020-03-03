@@ -3,10 +3,12 @@ import { Route } from "react-router-dom";
 import { useAuth0 } from "../auth/authHook";
 import ApolloClient, { PresetConfig } from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
+import { getEnvar } from "../utils/envars";
+import { Envars } from "../constants";
 
 const cnfg = (token: string) => {
   const config: PresetConfig = {
-    uri: "http://localhost:32000",
+    uri: getEnvar(Envars.GqlClient),
     request: (operation: any) => {
       operation.setContext((context: Record<string, any>) => ({
         headers: {
@@ -24,6 +26,7 @@ const PrivateRoute = ({ component: Component, path, ...rest }: any) => {
   const { loading, isAuthenticated, loginWithRedirect, token } = useAuth0()!;
 
   useEffect(() => {
+    console.log({ loading, isAuthenticated });
     if (loading || isAuthenticated) {
       return;
     }
@@ -33,10 +36,10 @@ const PrivateRoute = ({ component: Component, path, ...rest }: any) => {
       });
     };
     fn();
-  }, [loading, isAuthenticated, loginWithRedirect, path]);
+  });
 
   const render = (props: any) =>
-    isAuthenticated === true ? <Component {...props} /> : null;
+    isAuthenticated === true ? <Component {...props} /> : <div>No auth</div>;
 
   return (
     <ApolloProvider client={client(token)}>

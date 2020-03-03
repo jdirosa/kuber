@@ -17,6 +17,7 @@
     "@types/react-dom": "^16.9.5",
     "apollo-boost": "^0.4.7",
     "graphql": "^14.6.0",
+    "js-cookie": "^2.2.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
@@ -34,7 +35,12 @@
     "kuber-deploy": "kubectl apply -f ../deployment.yaml",
     "kuber-kill": "kubectl delete service,deployment kuber-react",
     "kuber-delete-pods": " kubectl delete pods -l app=kuber-react",
-    "deploy-to-cluster": "npm run build && npm run docker-build && npm run docker-tag && npm run docker-push && npm run kuber-delete-pods"
+    "deploy-to-cluster": "npm run build && npm run docker-build && npm run docker-tag && npm run docker-push && npm run kuber-delete-pods",
+    "aws-docker-login": "aws ecr get-login-password | docker login --username AWS --password-stdin 165416008559.dkr.ecr.us-east-1.amazonaws.com/mail-frontend",
+    "docker-build-prod": "docker build -t mail-frontend .",
+    "docker-tag-prod": "docker tag mail-frontend:latest 165416008559.dkr.ecr.us-east-1.amazonaws.com/mail-frontend:latest",
+    "docker-push-prod": "docker push 165416008559.dkr.ecr.us-east-1.amazonaws.com/mail-frontend:latest",
+    "docker-tag-build-push-prod": "npm run build && npm run docker-build-prod && npm run docker-tag-prod && npm run docker-push-prod"
   },
   "eslintConfig": {
     "extends": "react-app"
