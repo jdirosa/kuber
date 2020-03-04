@@ -40,11 +40,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const ComposeEmail: React.FC = () => {
+interface IProps {
+  onClose: () => void;
+}
+export const ComposeEmail: React.FC<IProps> = ({ onClose }) => {
   const [to, setTo] = React.useState("");
   const [subject, setSubject] = React.useState("");
   const [html, setHtml] = React.useState("");
-  const [sendEmail, { data, error }] = useMutation(SEND_EMAIL);
+  const [sendEmail, { data, error, loading }] = useMutation(SEND_EMAIL);
   const handleToUpdated = (e: React.ChangeEvent<any>) => {
     setTo(e.target.value);
   };
@@ -63,6 +66,14 @@ export const ComposeEmail: React.FC = () => {
       text: ""
     };
     const result = await sendEmail({ variables: { data: { ...email } } });
+
+    handleClose();
+  };
+  const handleClose = () => {
+    setTo("");
+    setSubject("");
+    setHtml("");
+    onClose();
   };
   const classes = useStyles();
   return (
@@ -80,6 +91,7 @@ export const ComposeEmail: React.FC = () => {
             label="Subject"
           />
           <TextField
+            disabled={loading}
             onChange={handleHtmlUpdated}
             fullWidth
             multiline
@@ -88,8 +100,11 @@ export const ComposeEmail: React.FC = () => {
         </div>
       </div>
       <div className={classes.buttonRow}>
-        <Button>Cancel</Button>
+        <Button disabled={loading} onClick={() => handleClose()}>
+          Cancel
+        </Button>
         <Button
+          disabled={loading}
           onClick={() => handleSendEmail()}
           color="primary"
           variant="contained"

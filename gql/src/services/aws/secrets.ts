@@ -50,7 +50,6 @@ const handleSecretError = (err: AWS.AWSError) => {
 const handleGetValue = (
   data: AWS.SecretsManager.GetSecretValueResponse
 ): SMTPCreds => {
-  console.log(data);
   if ("SecretString" in data) {
     return JSON.parse(data.SecretString);
   }

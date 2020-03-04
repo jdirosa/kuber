@@ -155,7 +155,7 @@ export const Emails: React.FC = () => {
           {activeEmail ? (
             <Email emailId={activeEmail.id} />
           ) : view === View.compose ? (
-            <ComposeEmail />
+            <ComposeEmail onClose={handleChangeView(View.inbox)} />
           ) : view === View.sent ? (
             <SentEmailList onEmailSelected={() => null} />
           ) : (

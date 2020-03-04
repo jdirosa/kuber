@@ -26,7 +26,6 @@ const PrivateRoute = ({ component: Component, path, ...rest }: any) => {
   const { loading, isAuthenticated, loginWithRedirect, token } = useAuth0()!;
 
   useEffect(() => {
-    console.log({ loading, isAuthenticated });
     if (loading || isAuthenticated) {
       return;
     }

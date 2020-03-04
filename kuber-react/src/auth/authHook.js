@@ -21,7 +21,7 @@ export const Auth0Provider = ({
   const [token, setToken] = useState();
 
   useEffect(() => {
-    cookie.remove("auth0.is.authenticated");
+    // cookie.remove("auth0.is.authenticated");
     const initAuth0 = async () => {
       const auth0FromHook = await createAuth0Client(initOptions);
       setAuth0(auth0FromHook);
