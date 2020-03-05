@@ -9,8 +9,8 @@ export const AuthCallback: React.FunctionComponent = ({
   location,
   history
 }: any) => {
+  alert("auth");
   const auth = useAuth0();
-
   const query = gql`
     mutation CreateUser($authId: String!, $emailAddress: String!) {
       createUser(data: { authId: $authId, emailAddress: $emailAddress }) {
@@ -20,7 +20,7 @@ export const AuthCallback: React.FunctionComponent = ({
     }
   `;
   const [addUser] = useMutation(query);
-
+  console.log({ location, history });
   React.useEffect(() => {
     if (!auth.user) {
       return;
@@ -28,9 +28,10 @@ export const AuthCallback: React.FunctionComponent = ({
     const sub: string = auth.user.sub;
     const authId = sub.substr(sub.indexOf("|") + 1);
     addUser({ variables: { authId } });
+    history.push("/email");
   }, [auth.user, addUser]);
   if (!auth.user) {
-    return null;
+    return <div>Nothing here</div>;
   }
 
   // Check if there is a return url (there always should be)

@@ -1,7 +1,6 @@
 import React from "react";
 import { useAuth0 } from "../../auth/authHook";
 import { Link } from "react-router-dom";
-
 export const Home: React.FC = () => {
   const { isAuthenticated, user } = useAuth0();
 

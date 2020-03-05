@@ -8,7 +8,7 @@ import {
   Theme,
   createStyles
 } from "@material-ui/core";
-import { Inbox, Archive, DeleteForever, Add, Send } from "@material-ui/icons";
+import { Inbox, DeleteForever, Add, Send } from "@material-ui/icons";
 import { EmailList } from "./EmailList";
 import { IEmail } from "../../models/Email";
 import { Email } from "./Email";
@@ -37,9 +37,9 @@ export const Emails: React.FC = () => {
   const [checkedEmails, setCheckedEmails] = React.useState<string[]>([]);
   const [activeEmail, setActiveEmail] = React.useState<IEmail>();
   const [view, setView] = React.useState<View>();
-  const [emails, setEmails] = React.useState<IEmail[]>();
+  const [deletedEmails, setDeletedEmails] = React.useState<string[]>([]);
   // TODO: Refactor out
-  const query = gql`
+  const emailQuery = gql`
     {
       emails {
         id
@@ -51,12 +51,9 @@ export const Emails: React.FC = () => {
     }
   `;
 
-  const { loading, data } = useQuery<{ emails: IEmail[] }>(query);
-  React.useEffect(() => {
-    if (data) {
-      setEmails(data.emails);
-    }
-  }, [loading]);
+  const { data } = useQuery<{ emails: IEmail[] }>(emailQuery, {
+    pollInterval: 20000
+  });
 
   const handleEmailSelected = (email: IEmail) => setActiveEmail(email);
   const handleChangeView = (view: View) => (e?: React.MouseEvent<any>) => {
@@ -78,8 +75,9 @@ export const Emails: React.FC = () => {
     // Delete this email
     if (activeEmail) {
       // Remove email from list in UI
-      const cpy = emails ? emails.filter(c => c.id !== activeEmail.id) : [];
-      setEmails(cpy);
+      const cpy = [...deletedEmails];
+      cpy.push(activeEmail.id);
+      setDeletedEmails(cpy);
 
       // Set the view back to default
       handleChangeView(View.inbox)();
@@ -92,13 +90,10 @@ export const Emails: React.FC = () => {
       return;
     }
     const chkEmailCopy = [...checkedEmails];
-    // Remove selected checked emails
-    const cpy = emails
-      ? emails.filter(c => !chkEmailCopy.some(ce => c.id === ce))
-      : [];
+    const cpy = [...deletedEmails, ...checkedEmails];
 
     // Clear selections and remove emails
-    setEmails(cpy);
+    setDeletedEmails(cpy);
     setCheckedEmails([]);
 
     for (let i = 0; i < chkEmailCopy.length; i++) {
@@ -160,7 +155,9 @@ export const Emails: React.FC = () => {
             <SentEmailList onEmailSelected={() => null} />
           ) : (
             <EmailList
-              emails={emails}
+              emails={data?.emails.filter(
+                e => !deletedEmails?.some(d => d === e.id)
+              )}
               onEmailChecked={handleEmailChecked}
               selectedEmails={checkedEmails}
               onEmailSelected={handleEmailSelected}

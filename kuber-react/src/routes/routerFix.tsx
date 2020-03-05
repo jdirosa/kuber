@@ -17,7 +17,5 @@ class RouterFixComp extends React.Component<any, {}> {
 const RouterFix = withRouter(RouterFixComp);
 
 export const RouterFixed: React.FunctionComponent = ({ children }) => (
-  <Router>
-    <RouterFix>{children}</RouterFix>
-  </Router>
+  <RouterFix>{children}</RouterFix>
 );

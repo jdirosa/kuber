@@ -42,7 +42,7 @@ export const TopNav: React.FC = ({ children }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            mailcloak - v0.0.5
+            mailcloak - v0.0.6
           </Typography>
           {isAuthenticated ? (
             <Button

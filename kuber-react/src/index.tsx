@@ -6,6 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./auth/authHook";
 import config from "./auth/auth-config.json";
 import history from "./utils/history";
+import { BrowserRouter as Router } from "react-router-dom";
 // A function that routes the user to the right place
 // after login
 const onRedirectCallback = (appState: any) => {
@@ -16,14 +17,16 @@ const onRedirectCallback = (appState: any) => {
   );
 };
 ReactDOM.render(
-  <Auth0Provider
-    domain={config.domain}
-    client_id={config.clientId}
-    redirect_uri={window.location.origin}
-    onRedirectCallback={onRedirectCallback as any}
-  >
-    <App />
-  </Auth0Provider>,
+  <Router>
+    <Auth0Provider
+      domain={config.domain}
+      client_id={config.clientId}
+      redirect_uri={window.location.origin}
+      onRedirectCallback={onRedirectCallback as any}
+    >
+      <App />
+    </Auth0Provider>
+  </Router>,
   document.getElementById("root")
 );
 
